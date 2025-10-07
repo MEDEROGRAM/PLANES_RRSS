@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mederogram | Propuesta de Servicios Digitales</title>
+    
+    <!-- Google Fonts: Poppins --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Integrado --><style>
+        /* ---------------------------------- */
+        /* RAÍZ Y VARIABLES          */
+        /* ---------------------------------- */
+        :root {
+            /* Paleta de colores extraída del portafolio de Mederogram */
+            --color-background: #121212; /* Negro/Gris oscuro para el fondo */
+            --color-surface: #1E1E1E;    /* Un gris ligeramente más claro para superficies como tarjetas */
+            --color-primary: #FFFFFF;    /* Blanco para texto principal */
+            --color-secondary: #a0a0a0; /* Gris claro para subtítulos y texto secundario */
+            --color-accent: #00f7c0;     /* Verde/Azulado vibrante para acentos y CTAs */
+            --color-accent-darker: #00d4a3; /* Tono más oscuro para hover en acentos */
+            
+            /* Tipografía */
+            --font-family: 'Poppins', sans-serif;
+
+            /* Espaciado */
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+            --spacing-xl: 64px;
+        }
+
+        /* ---------------------------------- */
+        /* ESTILOS GLOBALES            */
+        /* ---------------------------------- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Activa el scroll suave de forma nativa */
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-background);
+            color: var(--color-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ---------------------------------- */
+        /* COMPONENTES REUTILIZABLES  */
+        /* ---------------------------------- */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: var(--spacing-xl) var(--spacing-md);
+        }
+        
+        section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem); /* Tamaño de fuente fluido */
+            margin-bottom: var(--spacing-md);
+            color: var(--color-primary);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            color: var(--color-primary);
+        }
+
+        p {
+            color: var(--color-secondary);
+            margin-bottom: var(--spacing-lg);
+            max-width: 65ch; /* Limita el ancho de línea para mejor legibilidad */
+        }
+
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px; /* Botones tipo píldora */
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent-darker);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 192, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-accent);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 192, 0.2);
+        }
+
+        /* ---------------------------------- */
+        /* HEADER Y NAVEGACIÓN         */
+        /* ---------------------------------- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: var(--spacing-md) 0;
+            background-color: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .main-header.scrolled {
+             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo img {
+            height: 35px; /* Controla la altura del logo */
+            width: auto;
+            display: block;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+
+        .main-nav a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            color: var(--color-accent);
+        }
+        
+        .mobile-menu-toggle {
+            display: none; /* Oculto en escritorio */
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* ---------------------------------- */
+        /* HERO SECTION          */
+        /* ---------------------------------- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        #hero .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #hero h1 {
+            max-width: 800px;
+        }
+        
+        #hero p {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* ---------------------------------- */
+        /* SECCIÓN SERVICIOS        */
+        /* ---------------------------------- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .service-card {
+            background-color: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .service-card .icon {
+            color: var(--color-accent);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
+        }
+        
+        .service-card p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        /* ---------------------------------- */
+        /* SECCIÓN PLANES          */
+        /* ---------------------------------- */
+        .plans-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .plan-card {
+            background-color: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .plan-card h3 {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .plan-card .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .plan-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--color-secondary);
+        }
+
+        .plan-card ul {
+            list-style: none;
+            margin: var(--spacing-md) 0 var(--spacing-lg) 0;
+            flex-grow: 1; /* Empuja el botón hacia abajo */
+        }
+        
+        .plan-card ul li {
+            color: var(--color-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        /* Plan destacado */
+        .plan-card.popular {
+            transform: scale(1.05);
+            border-color: var(--color-accent);
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 247, 192, 0.2);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-accent);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        /* ---------------------------------- */
+        /* SECCIÓN EXTRAS          */
+        /* ---------------------------------- */
+        .extras-list {
+            max-width: 800px;
+            margin: var(--spacing-xl) auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+        
+        .extra-item {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            border-left: 4px solid var(--color-accent);
+        }
+        
+        .extra-item h3 {
+            font-size: 1.3rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .extra-item p {
+            margin: 0;
+            color: var(--color-secondary);
+        }
+        
+        /* ---------------------------------- */
+        /* SECCIÓN CONTACTO         */
+        /* ---------------------------------- */
+        #contacto .container {
+            text-align: center;
+        }
+
+        #contacto p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .social-links {
+            margin-top: var(--spacing-lg);
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+        }
+
+        .social-links a {
+            color: var(--color-secondary);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--color-accent);
+            transform: scale(1.2);
+        }
+        
+        /* ---------------------------------- */
+        /* FOOTER               */
+        /* ---------------------------------- */
+        footer {
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-secondary);
+        }
+
+        /* ---------------------------------- */
+        /* ANIMACIONES DE ENTRADA      */
+        /* ---------------------------------- */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in {
+            transform: translateY(20px);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ---------------------------------- */
+        /* RESPONSIVE             */
+        /* ---------------------------------- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Oculta la navegación normal en móvil */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--color-background);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .main-nav.active {
+                display: flex; /* Muestra el menú cuando está activo */
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .main-nav a {
+                font-size: 1.5rem;
+            }
+            
+            .mobile-menu-toggle {
+                display: block; /* Muestra el botón de hamburguesa */
+            }
+            
+            #hero {
+                padding-top: 80px; /* Evita que el contenido se solape con el header fijo */
+            }
+
+            .plan-card.popular {
+                transform: scale(1); /* Desactiva el escalado en móvil */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================= --><!--     HEADER FIJO         --><!-- ======================= --><header class="main-header">
+        <div class="nav-wrapper">
+            <a href="#" class="logo">
+                <img src="https://i.postimg.cc/MGK4VmfB/logo-juan-medero-png.png" alt="Mederogram Logo">
+                <span class="logo-text">mederogram<span class="text-accent">.</span></span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#planes">Planes</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <button class="mobile-menu-toggle" aria-label="Abrir menú">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 6H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 18H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ======================= --><!--     SECCIÓN HERO        --><!-- ======================= --><section id="hero">
+            <div class="container animate-on-scroll fade-in">
+                <h1>Potenciamos tu <span class="text-accent">Presencia Digital</span>.</h1>
+                <p>Soluciones de diseño y estrategia para marcas que quieren destacar en redes sociales.</p>
+                <a href="#planes" class="btn btn-primary">Ver Planes</a>
+            </div>
+        </section>
+
+        <!-- ======================= --><!--     SECCIÓN SERVICIOS     --><!-- ======================= --><section id="servicios">
+            <div class="container">
+                <h2 class="animate-on-scroll fade-in">Tu Marca Merece Más que un Simple Diseño.</h2>
+                <div class="services-grid">
+                    <!-- Tarjeta 1 --><div class="service-card animate-on-scroll fade-in" style="transition-delay: 100ms;">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                        </div>
+                        <h3>Diseño Estratégico</h3>
+                        <p>Capturamos la atención de tu audiencia ideal.</p>
+                    </div>
+                    <!-- Tarjeta 2 --><div class="service-card animate-on-scroll fade-in" style="transition-delay: 200ms;">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a7 7 0 0 0 7-7 7 7 0 0 0-7-7 7 7 0 0 0-7 7c0 1.93.78 3.68 2.05 4.95L12 22Z"/><path d="M12 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+                        </div>
+                        <h3>Identidad Sólida</h3>
+                        <p>Construimos una estética coherente que genera credibilidad.</p>
+                    </div>
+                    <!-- Tarjeta 3 --><div class="service-card animate-on-scroll fade-in" style="transition-delay: 300ms;">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.32-10.92A5.5 5.5 0 1 1 17.5 19Z"/></svg>
+                        </div>
+                        <h3>Contenido que Conecta</h3>
+                        <p>Fomentamos la interacción que se traduce en crecimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= --><!--      SECCIÓN PLANES     --><!-- ======================= --><section id="planes">
+            <div class="container">
+                <h2 class="animate-on-scroll fade-in">Planes Diseñados para Impulsar tu Crecimiento.</h2>
+                <div class="plans-grid">
+                    <!-- Plan 1 --><div class="plan-card animate-on-scroll fade-in" style="transition-delay: 100ms;">
+                        <h3>Arranque Digital</h3>
+                        <ul>
+                            <li>10 Piezas Gráficas Mensuales</li>
+                            <li>Posts y Stories</li>
+                        </ul>
+                        <div class="price">$120 <span>USD / mes</span></div>
+                        <a href="#contacto" class="btn btn-secondary">Elegir Plan</a>
+                    </div>
+                    <!-- Plan 2 (Popular) --><div class="plan-card popular animate-on-scroll fade-in" style="transition-delay: 200ms;">
+                        <div class="popular-badge">★ Más Popular ★</div>
+                        <h3>Crecimiento Constante</h3>
+                        <ul>
+                            <li>15 Piezas Gráficas Mensuales</li>
+                            <li>Flexibilidad de formatos</li>
+                        </ul>
+                        <div class="price">$180 <span>USD / mes</span></div>
+                        <a href="#contacto" class="btn btn-primary">Elegir Plan</a>
+                    </div>
+                    <!-- Plan 3 --><div class="plan-card animate-on-scroll fade-in" style="transition-delay: 300ms;">
+                        <h3>Impacto Total</h3>
+                        <ul>
+                            <li>20 Piezas Gráficas Mensuales</li>
+                            <li>Opción de Motion Graphics</li>
+                        </ul>
+                        <div class="price">$250 <span>USD / mes</span></div>
+                        <a href="#contacto" class="btn btn-secondary">Elegir Plan</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ======================= --><!--    SECCIÓN SERVICIOS EXTRA  --><!-- ======================= --><section id="extras">
+            <div class="container">
+                <h2 class="animate-on-scroll fade-in">¿Necesitas algo más?</h2>
+                <div class="extras-list">
+                    <div class="extra-item animate-on-scroll fade-in" style="transition-delay: 100ms;">
+                        <h3>Motion Graphics & Reels</h3>
+                        <p>Damos vida a tu marca con animaciones impactantes.</p>
+                    </div>
+                    <div class="extra-item animate-on-scroll fade-in" style="transition-delay: 200ms;">
+                        <h3>Estrategia de Contenido</h3>
+                        <p>Planificamos el contenido que tu audiencia quiere ver.</p>
+                    </div>
+                    <div class="extra-item animate-on-scroll fade-in" style="transition-delay: 300ms;">
+                        <h3>Branding & Identidad Visual</h3>
+                        <p>Creamos la base visual completa para tu marca.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= --><!--     SECCIÓN CONTACTO    --><!-- ======================= --><section id="contacto">
+            <div class="container animate-on-scroll fade-in">
+                <h2>Hablemos de tu Proyecto.</h2>
+                <p>¿Listo para llevar tu marca al siguiente nivel? Contáctame y construyamos algo increíble juntos.</p>
+                <a href="mailto:medero341@gmail.com" class="btn btn-primary" style="margin-top: 16px;">ENVIAR UN CORREO</a>
+                
+                <div class="social-links">
+                    <!-- WhatsApp (ícono final) --><a href="https://wa.me/584121992302" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                        </svg>
+                    </a>
+                    <!-- LinkedIn --><a href="https://www.linkedin.com/in/juan-luis-medero-658a19198" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                    <!-- Instagram --><a href="https://www.instagram.com/mederogram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================= --><!--         FOOTER          --><!-- ======================= --><footer>
+        <p>© 2025 Mederogram | Diseño y Desarrollo</p>
+    </footer>
+
+    <!-- JavaScript Integrado --><script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Lógica para el Header con Sombra al hacer Scroll ---
+            const header = document.querySelector('.main-header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // --- Lógica para el Menú Móvil (Hamburguesa) ---
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            
+            menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Cierra el menú móvil al hacer clic en un enlace
+            const navLinks = document.querySelectorAll('.main-nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                    }
+                });
+            });
+
+            // --- Lógica para Animaciones al Hacer Scroll (Intersection Observer) ---
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Opcional: deja de observar el elemento una vez animado
+                    }
+                });
+            }, {
+                threshold: 0.1 // El elemento se activa cuando el 10% es visible
+            });
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
